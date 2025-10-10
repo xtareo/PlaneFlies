@@ -1,0 +1,14 @@
+[
+{
+  "directory": "D:/Language/C/Document/PlaneFlies/build",
+  "command": "D:\\Language\\C\\mingw64\\bin\\gcc.exe  @CMakeFiles/PlaneFlies.dir/includes_C.rsp -g -std=gnu11 -o CMakeFiles\\PlaneFlies.dir\\src\\function.c.obj -c D:\\Language\\C\\Document\\PlaneFlies\\src\\function.c",
+  "file": "D:/Language/C/Document/PlaneFlies/src/function.c",
+  "output": "CMakeFiles/PlaneFlies.dir/src/function.c.obj"
+},
+{
+  "directory": "D:/Language/C/Document/PlaneFlies/build",
+  "command": "D:\\Language\\C\\mingw64\\bin\\gcc.exe  @CMakeFiles/PlaneFlies.dir/includes_C.rsp -g -std=gnu11 -o CMakeFiles\\PlaneFlies.dir\\src\\main.c.obj -c D:\\Language\\C\\Document\\PlaneFlies\\src\\main.c",
+  "file": "D:/Language/C/Document/PlaneFlies/src/main.c",
+  "output": "CMakeFiles/PlaneFlies.dir/src/main.c.obj"
+}
+]

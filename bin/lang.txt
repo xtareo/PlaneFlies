@@ -1,0 +1,2 @@
+PlaneFiles=飞机快飞
+Start=开始

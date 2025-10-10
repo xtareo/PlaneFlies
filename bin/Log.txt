@@ -1,0 +1,6 @@
+[2025-10-09 17:04:54]:Start initializing
+[2025-10-09 17:04:54]:SDL_Window has been successfully created
+[2025-10-09 17:04:54]:SDL_Render has been successfully created
+[2025-10-09 17:04:54]:LinkList dynamic memory allocation succeeded
+[2025-10-09 17:04:54]:Memory allocation for the head variable of type LinkList is successful.
+[2025-10-09 17:04:54]:LinkList dynamic memory allocation succeeded
