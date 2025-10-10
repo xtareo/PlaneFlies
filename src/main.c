@@ -23,6 +23,8 @@ int main(int argc,char *argv[]){
     char title_text[CHARMAX];
     LangRead("PlaneFiles",title_text);
     SDL_Window* window = SDL_CreateWindow(title_text, 1280 , 720 ,SDL_WINDOW_RESIZABLE);
+    int winW,winH;
+    SDL_GetWindowSize(window,&winW,&winH);
     if(!window){
         LogOutput(SDL_GetError());
         SDL_DestroyWindow(window);
@@ -76,6 +78,8 @@ int main(int argc,char *argv[]){
                 running = 1;
             }else if(event.type == SDL_EVENT_MOUSE_MOTION){
                 ButtonDecision(&head,1001);
+            }else if(event.type == SDL_EVENT_WINDOW_RESIZED){
+                ControlReSize(&head,1001,window,&winW,&winH);
             }
         }
         //绘制背景初始颜色

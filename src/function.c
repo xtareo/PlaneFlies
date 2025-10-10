@@ -49,7 +49,9 @@ void FreeLinkList(LinkList** list){
     }
     //在从下到上依次释放
     while(temp){
-        printf("Free Link: %d\n",temp->type);
+        char log_t[CHARMAX];
+        sprintf(log_t,"Free Link:%d",temp->type);
+        LogOutput(log_t);
         temp = temp->pre;
         if(temp){
             free(temp->next);
@@ -63,7 +65,6 @@ LinkList* LinkSearchAndModify(LinkList** list ,int type){
     LinkList* temp = *list;
     while(temp){
         if(temp->type == type){
-            LogOutput("The element [ID] has been found in the head variable.");
             return temp;
         }
         temp = temp->next;
@@ -74,7 +75,7 @@ LinkList* LinkSearchAndModify(LinkList** list ,int type){
 //语言文件读取
 void LangRead(char* vkey,char* text){
     FILE* file = fopen("lang.txt","r");
-    if(!fopen){
+    if(!file){
         LogOutput("Error:lang.txt failed to open!");
         return;
     }else {
@@ -164,8 +165,8 @@ void SetControlFontSize(int x ,int y ,int w,int h,int ID, LinkList** list){
 //根据控件字体设置控件大小
 SDL_FRect SetControlSize(SDL_FRect fre){
     SDL_FRect frect;
-    frect.x = fre.x - 50;
-    frect.y = fre.y - 30;
+    frect.x = fre.x * 0.65;
+    frect.y = fre.y * 0.9;
     frect.w = fre.w * 1.5;
     frect.h = fre.h * 1.5;
     return frect;
@@ -254,4 +255,38 @@ void LogOutput(const char* text){
     strcat(log_text,"\n");
     fprintf(file,"%s",log_text);
     fclose(file);
+}
+
+//跟随窗口缩放
+void FollowZoom(SDL_Window* window,SDL_FRect* rect,int* winW,int* winH){
+    int w,h;
+    SDL_GetWindowSize(window,&w,&h);
+    float ratioW = (float)w / (*winW);
+    float ratioH = (float)h / (*winH);
+    rect->h *= ratioH;
+    rect->w *= ratioW;
+    rect->x *= ratioW;
+    rect->y *= ratioH;
+    *winW = w;
+    *winH = h;
+}
+
+//多个控件大跟随缩放
+void ControlReSize(LinkList** list,int ID,SDL_Window* window,int* winW,int* winH){
+    LinkList* temp = LinkSearchAndModify(list,ID);
+    Control* control = NULL;
+    if(temp){
+        while(temp->type / (ID - 1) == 1){
+            control = (Control*)(temp->data);
+            if(!control){
+                LogOutput("Error:The value of this control is NULL!");
+                return;
+            }
+            FollowZoom(window,&(control->frect),winW,winH);
+            if(!temp->next){
+                return;
+            }
+            temp = temp->next;
+        }
+    }
 }
