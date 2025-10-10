@@ -15,3 +15,6 @@ Developed using SDL3 third-party libraries.
 #### Instructions for Use
 (Taking VSCode editor as an example, other editors can also be used)
 1. Use the CMake Tool to run the executable file, or manually open the bin folder and find the executable file to run.
+
+#### Update
+2025-10-10:Added controls to follow window scaling and fixed the issue of incorrect output of language file logs.
