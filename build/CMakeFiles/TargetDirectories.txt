@@ -1,3 +1,0 @@
-D:/Language/C/Document/PlaneFlies/build/CMakeFiles/PlaneFlies.dir
-D:/Language/C/Document/PlaneFlies/build/CMakeFiles/edit_cache.dir
-D:/Language/C/Document/PlaneFlies/build/CMakeFiles/rebuild_cache.dir

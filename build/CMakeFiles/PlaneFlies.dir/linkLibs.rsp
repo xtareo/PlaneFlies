@@ -1,1 +1,0 @@
-  -LD:/Language/C/Document/PlaneFlies/lib  -lSDL3 -lSDL3_ttf -lSDL3_image -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
