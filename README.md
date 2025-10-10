@@ -17,4 +17,4 @@ Developed using SDL3 third-party libraries.
 1. Use the CMake Tool to run the executable file, or manually open the bin folder and find the executable file to run.
 
 #### Update
-2025-10-10:Added controls to follow window scaling and fixed the issue of incorrect output of language file logs.
+2025-10-10:Added controls to follow window scaling and fixed the issue of log output errors when reading language files.
