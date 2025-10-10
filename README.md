@@ -1,18 +1,17 @@
 # PlaneFlies
 
-#### 介绍
-使用VSCode用C语言使用SDL3开发的小游戏，现在正在开发界面UI，游戏逻辑尚未开始写，也欢迎大佬对代码进行指点。
+#### Introduction
+A small game developed using VSCode, C language, and SDL3. The interface UI is currently being developed, and the game logic has not yet been written. We also welcome guidance from experts on the code.
 
-#### 软件架构
-使用了SDL3第三方库进行开发。
+#### Software architecture
+Developed using SDL3 third-party libraries.
 
+#### Installation Guide
+(Taking VSCode editor as an example, other editors can also be used)
+1. First, download MinGW64 and configure the environment variables, then install CMake and configure the environment variables.
+2. Open VSCode, install C language related extension plugins and CMake Tools plugin, and restart the editor.
+3. Extract the project files, open the project folder with VSCode, and use the CMake Tool to build the project. The built folder is called 'build', and the executable and resource files are in the bin folder.
 
-#### 安装教程
-(这里以VSCode编辑器为例，也可以用其他编辑器)
-1.  先下载MinGW64并配置好环境变量，再安装CMake并配置环境变量。
-2.  打开VSCode，安装C语言相关扩展插件和CMake Tools插件，重启编辑器。
-3.  解压项目文件，用VSCode打开项目文件夹，使用CMake Tool对项目进行构建，构建好的文件夹为build，可执行文件和资源文件在bin文件夹。
-
-#### 使用说明
-(这里以VSCode编辑器为例，也可以用其他编辑器)
-1.  使用CMake Tool运行可执行文件，或者手动打开bin文件夹，找到可执行文件进行运行。
+#### Instructions for Use
+(Taking VSCode editor as an example, other editors can also be used)
+1. Use the CMake Tool to run the executable file, or manually open the bin folder and find the executable file to run.
