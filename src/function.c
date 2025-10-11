@@ -185,13 +185,13 @@ void ControlRender(LinkList** list,int ID,SDL_Renderer* render){
                 LogOutput("Error:The value of this control is NULL!");
                 return;
             }
-            SDL_RenderTexture(render,control->ttf_texture,NULL,&(control->frect));
             rect = SetControlSize(control->frect);
             if(control->type){
                 SDL_RenderTexture(render,texture[1],NULL,&rect);
             }else{
                 SDL_RenderTexture(render,texture[0],NULL,&rect);
             }
+            SDL_RenderTexture(render,control->ttf_texture,NULL,&(control->frect));
             if(!temp->next){
                 return;
             }
