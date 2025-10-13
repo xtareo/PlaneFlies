@@ -20,3 +20,4 @@ Developed using SDL3 third-party libraries.
 2025-10-10:Added controls to follow window scaling and fixed the issue of log output errors when reading language files.
 
 2025-10-11:Fixed the layer issue of the button above the font and replaced the material of the control.
+2025-10-13:Fixed the issue where multiple controls cannot be enlarged together and added detection for multiple control regions.
