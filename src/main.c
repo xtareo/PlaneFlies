@@ -69,6 +69,9 @@ int main(int argc,char *argv[]){
     //创建按钮1
     CreateControl(1001,"Start",render,&head);
     SetControlFontSize(150,230,200,100,1001,&head);
+    //创建按钮2
+    CreateControl(1002,"Exit",render,&head);
+    SetControlFontSize(150,430,200,100,1002,&head);
     //创建渲染
     int running = 0;
     SDL_Event event;

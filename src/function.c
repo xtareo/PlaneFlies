@@ -230,16 +230,24 @@ void DestroyControl(LinkList** list,int ID){
 //判断是否在按钮内
 void ButtonDecision(LinkList** list,int ID){
     LinkList* temp = LinkSearchAndModify(list,ID);
-    Control* control = (Control*)(temp->data);
-    float x, y;
-    SDL_GetMouseState(&x,&y);
-    if(x > control->frect.x && x < control->frect.x + control->frect.w 
-        && y >control->frect.y && y <control->frect.y + control->frect.h
-    ){
-        control->type = 1;
-    }else {
-        control->type = 0;
+    Control* control = NULL;
+    while(temp->type / (ID - 1) == 1){
+        control = (Control*)(temp->data);
+        float x, y;
+        SDL_GetMouseState(&x,&y);
+        if(x > control->frect.x && x < control->frect.x + control->frect.w 
+            && y >control->frect.y && y <control->frect.y + control->frect.h
+        ){
+            control->type = 1;
+        }else{
+            control->type = 0;
+        }
+        if(!temp->next){
+            return;
+        }
+        temp = temp->next;
     }
+    
 }
 
 //日志输出函数
@@ -261,20 +269,22 @@ void LogOutput(const char* text){
 void FollowZoom(SDL_Window* window,SDL_FRect* rect,int* winW,int* winH){
     int w,h;
     SDL_GetWindowSize(window,&w,&h);
-    float ratioW = (float)w / (*winW);
-    float ratioH = (float)h / (*winH);
+    float ratioW = (float)w / (float)(*winW);
+    float ratioH = (float)h / (float)(*winH);
     rect->h *= ratioH;
     rect->w *= ratioW;
     rect->x *= ratioW;
     rect->y *= ratioH;
-    *winW = w;
-    *winH = h;
 }
 
 //多个控件大跟随缩放
 void ControlReSize(LinkList** list,int ID,SDL_Window* window,int* winW,int* winH){
     LinkList* temp = LinkSearchAndModify(list,ID);
     Control* control = NULL;
+    int w,h;
+    SDL_GetWindowSize(window,&w,&h);
+    float ratioW = (float)w / (float)(*winW);
+    float ratioH = (float)h / (float)(*winH);
     if(temp){
         while(temp->type / (ID - 1) == 1){
             control = (Control*)(temp->data);
@@ -284,6 +294,8 @@ void ControlReSize(LinkList** list,int ID,SDL_Window* window,int* winW,int* winH
             }
             FollowZoom(window,&(control->frect),winW,winH);
             if(!temp->next){
+                *winW = w;
+                *winH = h;
                 return;
             }
             temp = temp->next;
