@@ -156,20 +156,14 @@ void SetControlFontSize(int x ,int y ,int w,int h,int ID, LinkList** list){
     }else {
         LogOutput("The font size for Control has been set.");
     }
-    control->frect.x = x;
-    control->frect.y = y;
-    control->frect.w = w;
-    control->frect.h = h;
-}
-
-//根据控件字体设置控件大小
-SDL_FRect SetControlSize(SDL_FRect fre){
-    SDL_FRect frect;
-    frect.x = fre.x - 40;
-    frect.y = fre.y - 20;
-    frect.w = fre.w * 1.5;
-    frect.h = fre.h * 1.5;
-    return frect;
+    control->frect[0].x = x;
+    control->frect[0].y = y;
+    control->frect[0].w = w;
+    control->frect[0].h = h;
+    control->frect[1].x = control->frect[0].x - 40;
+    control->frect[1].y = control->frect[0].y - 20;
+    control->frect[1].w = control->frect[0].w * 1.5;
+    control->frect[1].h = control->frect[0].h * 1.5;
 }
 
 //多个控件渲染
@@ -177,7 +171,6 @@ void ControlRender(LinkList** list,int ID,SDL_Renderer* render){
     LinkList* temp = LinkSearchAndModify(list,ID);
     SDL_Texture** texture = (SDL_Texture**)((*list)->data);
     Control* control;
-    SDL_FRect rect;
     if(temp){
         while(temp->type / (ID - 1) == 1){
             control = (Control*)(temp->data);
@@ -185,13 +178,12 @@ void ControlRender(LinkList** list,int ID,SDL_Renderer* render){
                 LogOutput("Error:The value of this control is NULL!");
                 return;
             }
-            rect = SetControlSize(control->frect);
             if(control->type){
-                SDL_RenderTexture(render,texture[1],NULL,&rect);
+                SDL_RenderTexture(render,texture[1],NULL,&(control->frect[1]));
             }else{
-                SDL_RenderTexture(render,texture[0],NULL,&rect);
+                SDL_RenderTexture(render,texture[0],NULL,&(control->frect[1]));
             }
-            SDL_RenderTexture(render,control->ttf_texture,NULL,&(control->frect));
+            SDL_RenderTexture(render,control->ttf_texture,NULL,&(control->frect[0]));
             if(!temp->next){
                 return;
             }
@@ -235,8 +227,8 @@ void ButtonDecision(LinkList** list,int ID){
         control = (Control*)(temp->data);
         float x, y;
         SDL_GetMouseState(&x,&y);
-        if(x > control->frect.x && x < control->frect.x + control->frect.w 
-            && y >control->frect.y && y <control->frect.y + control->frect.h
+        if(x > control->frect[0].x && x < control->frect[0].x + control->frect[0].w 
+            && y >control->frect[0].y && y <control->frect[0].y + control->frect[0].h
         ){
             control->type = 1;
         }else{
@@ -278,10 +270,12 @@ void FollowZoom(SDL_Window* window,SDL_FRect* rect,int* winW,int* winH){
     SDL_GetWindowSize(window,&w,&h);
     float ratioW = (float)w / (float)(*winW);
     float ratioH = (float)h / (float)(*winH);
-    rect->h *= ratioH;
-    rect->w *= ratioW;
-    rect->x *= ratioW;
-    rect->y *= ratioH;
+    for(int i = 0;i < 2;i++){
+    rect[i].h *= ratioH;
+    rect[i].w *= ratioW;
+    rect[i].x *= ratioW;
+    rect[i].y *= ratioH;
+    }
 }
 
 //多个控件大跟随缩放
@@ -290,8 +284,6 @@ void ControlReSize(LinkList** list,int ID,SDL_Window* window,int* winW,int* winH
     Control* control = NULL;
     int w,h;
     SDL_GetWindowSize(window,&w,&h);
-    float ratioW = (float)w / (float)(*winW);
-    float ratioH = (float)h / (float)(*winH);
     if(temp){
         while(temp->type / (ID - 1) == 1){
             control = (Control*)(temp->data);
@@ -299,7 +291,7 @@ void ControlReSize(LinkList** list,int ID,SDL_Window* window,int* winW,int* winH
                 LogOutput("Error:The value of this control is NULL!");
                 return;
             }
-            FollowZoom(window,&(control->frect),winW,winH);
+            FollowZoom(window,control->frect,winW,winH);
             if(!temp->next){
                 *winW = w;
                 *winH = h;
