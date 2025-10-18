@@ -17,7 +17,7 @@ typedef struct LinkList{
 
 typedef struct {
     int type;
-    SDL_FRect frect;
+    SDL_FRect frect[2];
     SDL_Texture* ttf_texture;
 }Control;
 
