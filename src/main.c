@@ -83,6 +83,10 @@ int main(int argc,char *argv[]){
                 ButtonDecision(&head,1001);
             }else if(event.type == SDL_EVENT_WINDOW_RESIZED){
                 ControlReSize(&head,1001,window,&winW,&winH);
+            }else if(event.type == SDL_EVENT_MOUSE_BUTTON_DOWN){
+                if(GetButtonType(&head,1002)){
+                    running = 1;
+                }
             }
         }
         //绘制背景初始颜色

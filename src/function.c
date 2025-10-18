@@ -165,8 +165,8 @@ void SetControlFontSize(int x ,int y ,int w,int h,int ID, LinkList** list){
 //根据控件字体设置控件大小
 SDL_FRect SetControlSize(SDL_FRect fre){
     SDL_FRect frect;
-    frect.x = fre.x * 0.65;
-    frect.y = fre.y * 0.9;
+    frect.x = fre.x - 40;
+    frect.y = fre.y - 20;
     frect.w = fre.w * 1.5;
     frect.h = fre.h * 1.5;
     return frect;
@@ -227,7 +227,7 @@ void DestroyControl(LinkList** list,int ID){
     }
 }
 
-//判断是否在按钮内
+//判断是鼠标否在按钮内
 void ButtonDecision(LinkList** list,int ID){
     LinkList* temp = LinkSearchAndModify(list,ID);
     Control* control = NULL;
@@ -248,6 +248,13 @@ void ButtonDecision(LinkList** list,int ID){
         temp = temp->next;
     }
     
+}
+
+//获取Control的type
+int GetButtonType(LinkList** list,int ID){
+    LinkList* temp = LinkSearchAndModify(list,ID);
+    Control* control = (Control*)(temp->data);
+    return control->type;
 }
 
 //日志输出函数
