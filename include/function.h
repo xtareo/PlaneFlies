@@ -13,6 +13,7 @@ SDL_FRect SetControlSize(SDL_FRect fre);
 void ControlRender(LinkList** list,int ID,SDL_Renderer* render);
 void DestroyControl(LinkList** list,int ID);
 void ButtonDecision(LinkList** list,int ID);
+int GetButtonType(LinkList** list,int ID);
 void LogOutput(const char* text);
 void FollowZoom(SDL_Window* window,SDL_FRect* rect,int* winW,int* winH);
 void ControlReSize(LinkList** list,int ID,SDL_Window* window,int* winW,int* winH);
