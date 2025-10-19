@@ -9,6 +9,7 @@ void LangRead(char* vkey,char* text);
 SDL_Texture* FontTextureFromSurface(char* text,SDL_Color color,SDL_Renderer* render);
 void CreateControl(int ID,char* text,SDL_Renderer* render,LinkList** list);
 void SetControlFontSize(int x ,int y ,int w,int h,int ID, LinkList** list);
+int GetLayer(LinkList** list,int ID);
 void ControlRender(LinkList** list,int ID,SDL_Renderer* render);
 void DestroyControl(LinkList** list,int ID);
 void ButtonDecision(LinkList** list,int ID);
