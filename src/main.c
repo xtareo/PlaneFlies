@@ -23,6 +23,7 @@ int main(int argc,char *argv[]){
     char title_text[CHARMAX];
     LangRead("PlaneFiles",title_text);
     SDL_Window* window = SDL_CreateWindow(title_text, 1280 , 720 ,SDL_WINDOW_RESIZABLE);
+    //获取窗口大小
     int winW,winH;
     SDL_GetWindowSize(window,&winW,&winH);
     if(!window){
@@ -74,6 +75,8 @@ int main(int argc,char *argv[]){
     SetControlFontSize(150,430,200,100,1002,&head);
     //创建渲染
     int running = 0;
+    //定义当前图层变量
+    int layer = 1;
     SDL_Event event;
     while(!running){
         while(SDL_PollEvent(&event)){
@@ -84,8 +87,11 @@ int main(int argc,char *argv[]){
             }else if(event.type == SDL_EVENT_WINDOW_RESIZED){
                 ControlReSize(&head,1001,window,&winW,&winH);
             }else if(event.type == SDL_EVENT_MOUSE_BUTTON_DOWN){
-                if(GetButtonType(&head,1002)){
+                if(layer == 1 && GetButtonType(&head,1002)){
                     running = 1;
+                }
+                if(layer == 1 && GetButtonType(&head,1001)){
+                    layer = 2;
                 }
             }
         }
@@ -96,7 +102,7 @@ int main(int argc,char *argv[]){
         //渲染背景图
         SDL_RenderTexture(render,background,NULL,NULL);
         //渲染控件
-        ControlRender(&(head),1001,render);
+        if(GetLayer(&head, 1001) == layer) ControlRender(&(head),1001,render);
         //更新屏幕
         SDL_RenderPresent(render);
         //显示帧率60fps

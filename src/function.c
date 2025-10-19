@@ -165,6 +165,11 @@ void SetControlFontSize(int x ,int y ,int w,int h,int ID, LinkList** list){
     control->frect[1].w = control->frect[0].w * 1.5;
     control->frect[1].h = control->frect[0].h * 1.5;
 }
+//获取元素图层
+int GetLayer(LinkList** list,int ID){
+    LinkList* temp = LinkSearchAndModify(list,ID);
+    return (temp->type / (ID - 1));
+}
 
 //多个控件渲染
 void ControlRender(LinkList** list,int ID,SDL_Renderer* render){
