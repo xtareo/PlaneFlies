@@ -71,8 +71,11 @@ int main(int argc,char *argv[]){
     CreateControl(1001,"Start",render,&head);
     SetControlFontSize(150,230,200,100,1001,&head);
     //创建按钮2
-    CreateControl(1002,"Exit",render,&head);
-    SetControlFontSize(150,430,200,100,1002,&head);
+    CreateControl(1002,"Setting",render,&head);
+    SetControlFontSize(150,400,200,100,1002,&head);
+    //创建按钮3
+    CreateControl(1003,"Exit",render,&head);
+    SetControlFontSize(150,570,200,100,1003,&head);
     //创建渲染
     int running = 0;
     //定义当前图层变量
@@ -87,7 +90,7 @@ int main(int argc,char *argv[]){
             }else if(event.type == SDL_EVENT_WINDOW_RESIZED){
                 ControlReSize(&head,1001,window,&winW,&winH);
             }else if(event.type == SDL_EVENT_MOUSE_BUTTON_DOWN){
-                if(layer == 1 && GetButtonType(&head,1002)){
+                if(layer == 1 && GetButtonType(&head,1003)){
                     running = 1;
                 }
                 if(layer == 1 && GetButtonType(&head,1001)){
