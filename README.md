@@ -26,3 +26,5 @@ Developed using SDL3 third-party libraries.
 2025-10-18:Fixed the button text not being centered and added practical functionality to the exit button.
 
 2025-10-19:Added a new feature to the first button.
+
+2025-10-20:Added a settings button.
