@@ -1,3 +1,4 @@
-PlaneFiles=PlaneFiles
-Start=Start
-Exit=Exit
+PlaneFiles=飞机快飞
+Start=开始
+Setting=设置
+Exit=退出
