@@ -366,7 +366,7 @@ int RenderGIFTexture(void* data){
         for (size_t i = 0; i < sh->num; i++)
         {
             if(frect[i].x <= 1280){
-                frect[i].x += 10;
+                frect[i].x += 20;
             }else {
                 frect[i].x = 0 - frect[i].w;
             }
