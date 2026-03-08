@@ -28,3 +28,5 @@ Developed using SDL3 third-party libraries.
 2025-10-19:Added a new feature to the first button.
 
 2025-10-20:Added a settings button.
+
+2026-3-8:Update the generation algorithm of clouds.
