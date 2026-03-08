@@ -17,3 +17,6 @@ int GetButtonType(LinkList** list,int ID);
 void LogOutput(const char* text);
 void FollowZoom(SDL_Window* window,SDL_FRect* rect,int* winW,int* winH);
 void ControlReSize(LinkList** list,int ID,SDL_Window* window,int* winW,int* winH);
+int RenderGIFTexture(void* data);
+void initSubstancePosition(SDL_FRect* frect,int len,int winW,int winH);
+SDL_FRect* MallocSDLFRectArray(int len);

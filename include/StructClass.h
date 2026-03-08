@@ -25,5 +25,14 @@ typedef struct{
     int type;
     int layer;
     float velocity;
-    SDL_Texture* texture[2];
+    SDL_Texture* texture;
 }Plane;
+
+
+typedef struct {
+    SDL_Mutex *mutex;
+    void* data;
+    int running;
+    int num;
+    int exit;
+}SharedDate;
