@@ -146,7 +146,7 @@ void CreateControl(int ID,char* text,SDL_Renderer* render,LinkList** list){
     LogOutput("The element has been added to the appended element of the head variable.");
 }
 
-//设置字体大小长宽
+//设置字体(按钮大小)大小长宽
 void SetControlFontSize(int x ,int y ,int w,int h,int ID, LinkList** list){
     LinkList* temp = LinkSearchAndModify(list,ID);
     Control* control = (Control*)(temp->data);
@@ -275,20 +275,16 @@ void FollowZoom(SDL_Window* window,SDL_FRect* rect,int* winW,int* winH){
     SDL_GetWindowSize(window,&w,&h);
     float ratioW = (float)w / (float)(*winW);
     float ratioH = (float)h / (float)(*winH);
-    for(int i = 0;i < 2;i++){
-    rect[i].h *= ratioH;
-    rect[i].w *= ratioW;
-    rect[i].x *= ratioW;
-    rect[i].y *= ratioH;
-    }
+    rect->h *= ratioH;
+    rect->w *= ratioW;
+    rect->x *= ratioW;
+    rect->y *= ratioH;
 }
 
 //多个控件大跟随缩放
 void ControlReSize(LinkList** list,int ID,SDL_Window* window,int* winW,int* winH){
     LinkList* temp = LinkSearchAndModify(list,ID);
     Control* control = NULL;
-    int w,h;
-    SDL_GetWindowSize(window,&w,&h);
     if(temp){
         while(temp->type / (ID - 1) == 1){
             control = (Control*)(temp->data);
@@ -296,13 +292,90 @@ void ControlReSize(LinkList** list,int ID,SDL_Window* window,int* winW,int* winH
                 LogOutput("Error:The value of this control is NULL!");
                 return;
             }
-            FollowZoom(window,control->frect,winW,winH);
+            for(int i = 0;i< 2;i++){
+                FollowZoom(window,&(control->frect[i]),winW,winH);
+            }
             if(!temp->next){
-                *winW = w;
-                *winH = h;
                 return;
             }
             temp = temp->next;
         }
     }
+}
+
+//动态分配SDL_FRect一维数组
+SDL_FRect* MallocSDLFRectArray(int len){
+    SDL_FRect* frect = (SDL_FRect*)malloc(len * sizeof(SDL_FRect));
+    if(!frect){
+        LogOutput("Failed to dynamically allocate an SDL_FRect array!!!");
+        return NULL;
+    }
+    for(int i = 0;i < len;i++){
+        frect[i].h = 0;
+        frect[i].w = 0;
+        frect[i].x = 0;
+        frect[i].y = 0;
+    }
+    LogOutput("Dynamic allocation of SDL_FRect array succeeded.");
+    return frect;
+}
+
+//初始化对象坐标随机生成(区块生成算法)
+void initSubstancePosition(SDL_FRect* frect,int len,int winW,int winH){
+    if(!frect){
+        LogOutput("The SDL_FRect array is NULL!");
+        return;
+    }
+    int blockW = winW / 6;
+    int blockH = winH / 5;
+    for (int i = 0; i < len; i++)
+    {
+        int rd_blockW = (rand() % (3 - 2 + 1) + 2) * blockW;
+        int rd_blockH = (rand() % 2 + 1) * blockH;
+        frect[i].w = rand() % (rd_blockW - (rd_blockW - 5) + 1) + (rd_blockW - 5);
+        frect[i].h = rand() % (rd_blockH - (rd_blockH - 2) + 1) + (rd_blockH - 2);
+        if(!i){
+            frect[i].x = rand() % (5 - 4 + 1) + 4;
+            frect[i].y = rand() % (4 - 2 + 1) + 2;
+        }else {
+            frect[i].x = frect[i - 1].x + frect[i - 1].w + (rand() % (5 - 3 + 1) + 3);
+            if(frect[i].x + frect[i].w * 0.2 > 1280){
+                int maxY = 0;
+                for(int j = i; j >= 0 ; j--){
+                    if(maxY < frect[j].y + frect[j].h) {
+                        maxY = frect[j].y + frect[j].h;
+                    }
+                }
+                frect[i].y = maxY + 3;
+                frect[i].x = rand() % (5 - 4 + 1) + 4;
+            }else {
+                frect[i].y = frect[i-1].y + rand() % (4 - 2 + 1) + 2;
+            }
+        }
+    }
+}
+
+//动图渲染
+int RenderGIFTexture(void* data){
+    SharedDate* sh = (SharedDate*)data;
+    LogOutput("start dender GIF texture thread");
+    SDL_FRect* frect = (SDL_FRect*)(sh->data);
+    while(sh->exit){
+        while (sh->running){
+        SDL_LockMutex(sh->mutex);
+        for (size_t i = 0; i < sh->num; i++)
+        {
+            if(frect[i].x <= 1280){
+                frect[i].x += 10;
+            }else {
+                frect[i].x = 0 - frect[i].w;
+            }
+        }
+        SDL_UnlockMutex(sh->mutex);
+        SDL_Delay(16);
+        }
+    }
+    frect = NULL;
+    LogOutput("Render GIF Texture end!");
+    return 0;
 }

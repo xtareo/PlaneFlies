@@ -19,6 +19,8 @@ int main(int argc,char *argv[]){
         LogOutput(SDL_GetError());
         return 1;
     }
+    //初始化随机种子
+    srand(time(0));
     //创建窗口
     char title_text[CHARMAX];
     LangRead("PlaneFiles",title_text);
@@ -51,8 +53,18 @@ int main(int argc,char *argv[]){
     SDL_Texture* control_public[2] = {IMG_LoadTexture(render, "assets/Control/1.png"),IMG_LoadTexture(render, "assets/Control/2.png")};
     //加载背景材质
     SDL_Texture* background = IMG_LoadTexture(render,"assets/background.png");
+    //加载动态背景图
+    SDL_Texture* background_gif = IMG_LoadTexture(render,"assets/cloud.png");
     //创建链表
     LinkList* head = CreateLinkList(10);
+    //创建标题
+    SDL_Texture* title_texture = IMG_LoadTexture(render,"assets/title1.png");
+    SDL_FRect title_frect = {.h= 100, .w = 400, .x = 40, .y =40};
+    if (!strcmp(title_text,"PlaneFiles"))
+    {
+        title_texture = IMG_LoadTexture(render,"assets/title2.png");
+    }
+    //创建链表
     if(!head){
         LogOutput("Error:The head variable of the LinkList type is set to NULL in memory!");
         SDL_DestroyTexture(background);
@@ -76,6 +88,23 @@ int main(int argc,char *argv[]){
     //创建按钮3
     CreateControl(1003,"Exit",render,&head);
     SetControlFontSize(150,570,200,100,1003,&head);
+    //初始化共享数据
+    SharedDate shared;
+    shared.mutex = SDL_CreateMutex();
+    shared.running = 0;
+    shared.exit = 1;
+    shared.num = 10;
+    SDL_FRect* frectyun = MallocSDLFRectArray(shared.num);
+    shared.data = frectyun;
+    initSubstancePosition(frectyun,shared.num,winW,winH);
+    if(!shared.mutex){
+        LogOutput("Create Mutex Error!");
+    }
+    //创建线程
+    SDL_Thread* RenderGIF = SDL_CreateThread(RenderGIFTexture,"RenderGIFTexture",&shared);
+    if(!RenderGIF){
+        LogOutput("Create RenderGIF Error!");
+    }
     //创建渲染
     int running = 0;
     //定义当前图层变量
@@ -88,34 +117,61 @@ int main(int argc,char *argv[]){
             }else if(event.type == SDL_EVENT_MOUSE_MOTION){
                 ButtonDecision(&head,1001);
             }else if(event.type == SDL_EVENT_WINDOW_RESIZED){
+                FollowZoom(window,&title_frect,&winW,&winH);
                 ControlReSize(&head,1001,window,&winW,&winH);
+                SDL_GetWindowSize(window,&winW,&winH);
             }else if(event.type == SDL_EVENT_MOUSE_BUTTON_DOWN){
                 if(layer == 1 && GetButtonType(&head,1003)){
                     running = 1;
                 }
                 if(layer == 1 && GetButtonType(&head,1001)){
+                    SDL_LockMutex(shared.mutex);
+                    shared.running = 1;
+                    SDL_UnlockMutex(shared.mutex);
                     layer = 2;
                 }
             }
         }
         //绘制背景初始颜色
-        SDL_SetRenderDrawColor(render,100, 100, 220, 255);
+        SDL_SetRenderDrawColor(render,87, 163, 249, 255);
         //清理屏幕
         SDL_RenderClear(render);
         //渲染背景图
-        SDL_RenderTexture(render,background,NULL,NULL);
+        if(layer == 1) SDL_RenderTexture(render,background,NULL,NULL);
+        SDL_LockMutex(shared.mutex);
+        if(layer == 2) {
+            for(int i = 0;i < shared.num;i++){
+                SDL_RenderTexture(render,background_gif,NULL,&frectyun[i]);
+            }
+        }
+        SDL_UnlockMutex(shared.mutex);
         //渲染控件
+        if (layer == 1) SDL_RenderTexture(render,title_texture,NULL,&title_frect);
+        
         if(GetLayer(&head, 1001) == layer) ControlRender(&(head),1001,render);
         //更新屏幕
         SDL_RenderPresent(render);
         //显示帧率60fps
         SDL_Delay(16);
     }
+    SDL_LockMutex(shared.mutex);
+    shared.running = 0;
+    shared.exit = 0;
+    SDL_UnlockMutex(shared.mutex);
+    //等待线程结束
+    LogOutput("wait thread(RenderGIF) end...");
+    SDL_WaitThread(RenderGIF,NULL);
+    LogOutput("wait thread(RenderGIF) end!");
+    free(frectyun);
+    LogOutput("The SDL_FRect array has been successfully dynamically released.");
     //内存释放
     DestroyControl(&head,1001);
     FreeLinkList(&head);
     free(head);
     head = NULL;
+    SDL_DestroyMutex(shared.mutex);
+    SDL_DestroyTexture(background_gif);
+    SDL_DestroyTexture(title_texture);
     SDL_DestroyTexture(background);
     SDL_DestroyTexture(control_public[0]);
     SDL_DestroyTexture(control_public[1]);
