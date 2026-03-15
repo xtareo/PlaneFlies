@@ -37,5 +37,3 @@ typedef struct {
     int num;
     int exit;
 }SharedDate;
-
-

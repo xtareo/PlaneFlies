@@ -21,5 +21,3 @@ int RenderGIFTexture(void* data);
 void initSubstancePosition(SDL_FRect* frect,int len,int winW,int winH);
 SDL_FRect* MallocSDLFRectArray(int len);
 void FRectResize(SDL_Window* window,SDL_FRect* frect,int len,int* winW,int* winH);
-
-

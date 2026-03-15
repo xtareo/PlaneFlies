@@ -391,4 +391,3 @@ int RenderGIFTexture(void* data){
     LogOutput("Render GIF Texture end!");
     return 0;
 }
-
