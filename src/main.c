@@ -94,6 +94,7 @@ int main(int argc,char *argv[]){
     shared.running = 0;
     shared.exit = 1;
     shared.num = 10;
+    shared.WinW = winW;
     SDL_FRect* frectyun = MallocSDLFRectArray(shared.num);
     shared.data = frectyun;
     initSubstancePosition(frectyun,shared.num,winW,winH);
@@ -119,7 +120,11 @@ int main(int argc,char *argv[]){
             }else if(event.type == SDL_EVENT_WINDOW_RESIZED){
                 FollowZoom(window,&title_frect,&winW,&winH);
                 ControlReSize(&head,1001,window,&winW,&winH);
+                SDL_LockMutex(shared.mutex);
+                FRectResize(window,frectyun,shared.num,&winW,&winH);
                 SDL_GetWindowSize(window,&winW,&winH);
+                shared.WinW = winW;
+                SDL_UnlockMutex(shared.mutex);
             }else if(event.type == SDL_EVENT_MOUSE_BUTTON_DOWN){
                 if(layer == 1 && GetButtonType(&head,1003)){
                     running = 1;

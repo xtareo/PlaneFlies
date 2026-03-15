@@ -32,6 +32,7 @@ typedef struct{
 typedef struct {
     SDL_Mutex *mutex;
     void* data;
+    int WinW;
     int running;
     int num;
     int exit;

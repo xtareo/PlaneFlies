@@ -302,6 +302,17 @@ void ControlReSize(LinkList** list,int ID,SDL_Window* window,int* winW,int* winH
         }
     }
 }
+//纹理数组跟随窗口缩放
+void FRectResize(SDL_Window* window,SDL_FRect* frect,int len,int* winW,int* winH){
+    if(!frect){
+        LogOutput("Error:The value of this control is NULL!");
+        return;
+    }
+    for (int i = 0; i < len; i++)
+    {
+        FollowZoom(window,&(frect[i]),winW,winH);
+    }
+}
 
 //动态分配SDL_FRect一维数组
 SDL_FRect* MallocSDLFRectArray(int len){
@@ -365,8 +376,8 @@ int RenderGIFTexture(void* data){
         SDL_LockMutex(sh->mutex);
         for (size_t i = 0; i < sh->num; i++)
         {
-            if(frect[i].x <= 1280){
-                frect[i].x += 20;
+            if(frect[i].x <= sh->WinW){
+                frect[i].x += (sh->WinW / 80);
             }else {
                 frect[i].x = 0 - frect[i].w;
             }
