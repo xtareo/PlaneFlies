@@ -302,6 +302,7 @@ void ControlReSize(LinkList** list,int ID,SDL_Window* window,int* winW,int* winH
         }
     }
 }
+
 //纹理数组跟随窗口缩放
 void FRectResize(SDL_Window* window,SDL_FRect* frect,int len,int* winW,int* winH){
     if(!frect){
@@ -390,3 +391,4 @@ int RenderGIFTexture(void* data){
     LogOutput("Render GIF Texture end!");
     return 0;
 }
+
